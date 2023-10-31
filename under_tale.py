@@ -6,24 +6,68 @@ import pygame as pg
 
 
 WIDTH = 800
-HEIGHT = 450
+HEIGHT = 500
+
+def check_bound(obj_rct: pg.Rect) -> tuple[bool, bool]:
+    yoko, tate = True, True
+    if obj_rct.left < 390/2+10 or 595 < obj_rct.right:
+        yoko = False
+    if obj_rct.top < 200 or 395 < obj_rct.bottom:
+        tate = False
+    return yoko, tate
+
+class player_move:
+    
+    delta = { # 押下キーと移動量の辞書
+        pg.K_UP: (0, -1),
+        pg.K_DOWN: (0, 1),
+        pg.K_LEFT: (-0.1, 0),
+        pg.K_RIGHT: (+1, 0),
+    }
+
+    def __init__(self, xy: tuple[float, float]):
+        self.img = pg.transform.flip(  # 左右反転
+            pg.transform.rotozoom(  # 2倍に拡大
+                pg.image.load(f"fig/0.png"), 
+                                0, 
+                                0.5), 
+                                True, 
+                                False)
+        self.rct = self.img.get_rect()
+        self.rct.center = xy
+
+    def update(self,key_lst: list[bool],screen:pg.Surface):
+        sum_mv = [0, 0]
+        for k, mv in __class__.delta.items():
+            if key_lst[k]:
+                sum_mv[0] += mv[0]
+                sum_mv[1] += mv[1]
+        self.rct.move_ip(sum_mv)
+        if check_bound(self.rct) != (True, True):
+            self.rct.move_ip(-sum_mv[0], -sum_mv[1])
+        
+        screen.blit(self.img, self.rct)
 
 
 def main():
     pg.display.set_caption("Under tale")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
-    sikaku1 = pg.Surface((650, 375))
-    pg.draw.rect(sikaku1, (255, 255, 255), (150, 160, 700, 420))
-    pg.draw.rect(sikaku1, (0, 0, 0), (155, 165, 490, 205))
+    sikaku1 = pg.Surface((400, 200))
+    pg.draw.rect(sikaku1, (255, 255, 255), (0, 0, 400, 200))
+    pg.draw.rect(sikaku1, (0, 0, 0), (5, 5, 390, 190))
+
+    bird = player_move((WIDTH/2, HEIGHT/2))
 
     while True:
-        screen.blit(sikaku1, (0, 0))
+        screen.blit(sikaku1, (200, 200))    
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 return 0
             
+        key_lst = pg.key.get_pressed()
+        bird.update(key_lst, screen)
         pg.display.update()
-
+        
 
 if __name__ == "__main__":
     pg.init()
