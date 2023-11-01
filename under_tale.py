@@ -12,7 +12,7 @@ def check_bound(obj_rct: pg.Rect) -> tuple[bool, bool]:
     yoko, tate = True, True
     if obj_rct.left < 390/2+10 or 595 < obj_rct.right:
         yoko = False
-    if obj_rct.top < 200 or 395 < obj_rct.bottom:
+    if obj_rct.top < 205 or 395 < obj_rct.bottom:
         tate = False
     return yoko, tate
 
@@ -21,16 +21,16 @@ class player_move:
     delta = { # 押下キーと移動量の辞書
         pg.K_UP: (0, -1),
         pg.K_DOWN: (0, 1),
-        pg.K_LEFT: (-0.1, 0),
+        pg.K_LEFT: (-1, 0),
         pg.K_RIGHT: (+1, 0),
     }
 
     def __init__(self, xy: tuple[float, float]):
         self.img = pg.transform.flip(  # 左右反転
-            pg.transform.rotozoom(  # 2倍に拡大
+            pg.transform.rotozoom(  # 
                 pg.image.load(f"fig/0.png"), 
                                 0, 
-                                0.5), 
+                                0.02), 
                                 True, 
                                 False)
         self.rct = self.img.get_rect()
@@ -56,8 +56,9 @@ def main():
     pg.draw.rect(sikaku1, (255, 255, 255), (0, 0, 400, 200))
     pg.draw.rect(sikaku1, (0, 0, 0), (5, 5, 390, 190))
 
-    bird = player_move((WIDTH/2, HEIGHT/2))
+    player = player_move((WIDTH/2, HEIGHT/2))
 
+    clock = pg.time.Clock()#動くの遅くする
     while True:
         screen.blit(sikaku1, (200, 200))    
         for event in pg.event.get():
@@ -65,8 +66,9 @@ def main():
                 return 0
             
         key_lst = pg.key.get_pressed()
-        bird.update(key_lst, screen)
+        player.update(key_lst, screen)#わい
         pg.display.update()
+        clock.tick(165)#動くの遅くする
         
 
 if __name__ == "__main__":
