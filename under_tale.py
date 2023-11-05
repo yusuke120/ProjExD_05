@@ -10,7 +10,9 @@ HEIGHT = 500
 #追加
 jump_flag=0
 cnt=0
+otikasoku=0
 jump=[]
+high_jump=0
 
 
 class player_move:
@@ -20,8 +22,8 @@ class player_move:
             pg.K_LEFT: (-1, 0),
             pg.K_RIGHT: (+1, 0),
         }
-    delta2={ pg.K_UP: (0, -4),#ハートが青いときの辞書
-            pg.K_DOWN: (0, 1),
+    delta2={ pg.K_UP: (0, -3),#ハートが青いときの辞書
+            pg.K_DOWN: (0, 0),
             pg.K_LEFT: (-1, 0),
             pg.K_RIGHT: (+1, 0),
         }
@@ -59,24 +61,35 @@ class player_move:
 
         #ハートが青いとき
         elif ao==1:
-            global jump,cnt
+            global jump,cnt,otikasoku,jump_flag,high_jump
             jump.append(self.rct[1])  
             for k, mv in __class__.delta2.items():   
-                if self.rct[1]<=376:#ハートが枠の下についていないとき落ちる
-                    sum_mv[1]+=0.3
+
+                #ハートが枠の下についていないとき落ちる
+                if jump[cnt]>=jump[cnt-1]:
+                    sum_mv[1]+=0.3     #+otikasoku   
+                    #otikasoku+=0.0003
+                    jump_flag=1
+
                 
                 if key_lst[k]:
                     sum_mv[0] += mv[0]
-                    print(jump[cnt],jump[cnt-1])
-                    if jump[cnt]<=jump[cnt-1]:#ハートが前回より下がっているときは上にいけない
+                    
+                    if jump[cnt]<=jump[cnt-1] and self.rct[1]>=high_jump:#ハートが前回以上に上がっていれば上にいける
                         sum_mv[1] += mv[1]
-
+                        print(jump_flag)
+                        
+                        if jump_flag==1:
+                            high_jump=self.rct[1]-100
+                            jump_flag=0
+            
 
             self.rct.move_ip(sum_mv)
             if self.rct[1]<=205:#上
                 self.rct[1]=205
             if self.rct[1]>=375:#した
                 self.rct[1]=375
+                #otikasoku=0
             if self.rct[0]>=578:#右
                 self.rct[0]=578
             if self.rct[0]<=205:#左
@@ -98,7 +111,7 @@ def main():
     if ao_flag==0:#ハートが赤の時は真ん中からスタート
         player = player_move((WIDTH/2, HEIGHT/2),ao_flag)
     elif ao_flag==1:#ハートが青の時地面からスタート
-        player = player_move((WIDTH/2, 376),ao_flag)
+        player = player_move((WIDTH/2, 386),ao_flag)
     clock = pg.time.Clock()
     ##追加
 
@@ -108,12 +121,12 @@ def main():
             if event.type == pg.QUIT:
                 return 0
             
-        ##追加
+        ###追加
         key_lst = pg.key.get_pressed()
         player.update(key_lst, screen,ao_flag)
         pg.display.update()
         clock.tick(165)#動くの遅くする
-        ##追加
+        ###追加
 
 if __name__ == "__main__":
     pg.init()
