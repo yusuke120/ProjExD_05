@@ -32,8 +32,9 @@ class Enemy(pg.sprite.Sprite):
 
     def __init__(self):
         super().__init__()
+        
         self.img =  pg.transform.scale(pg.image.load("..\ProjExD_05\data\pngwingcom_negate.png"), (300, 200))
-
+        ##self.img =  pg.transform.scale(pg.image.load("..\ProjExD_05\data\sans.png"), (150, 150))
     def update(self, screen: pg.Surface):
         screen.blit(self.img, (250, 0))
 
@@ -277,10 +278,6 @@ class Bullet(pg.sprite.Sprite):
         if attack_type:
             self.speed = 3
         self.vx, self.vy = calc_orientation(self.rect, pre_x, pre_y)
-        shoot_sound = load_sound("ショット.mp3")
-        if pg.mixer:
-            shoot_sound.set_volume(0.4)
-            shoot_sound.play()
 
     def update(self):
         """
@@ -596,7 +593,7 @@ def main():
             if not(pressing) and event.type == pg.KEYDOWN and event.key == pg.K_RETURN and mode == "ITEM":
                 cure_sound = load_sound("パワーアップ.mp3")
                 if ex_select == 0:
-                    if item1_stock != 0:
+                    if item1_stock > 0:
                         if pg.mixer:
                             cure_sound.play()
                         hp_bar_green.width += 50
@@ -604,11 +601,11 @@ def main():
                         mode = "avoid"
 
                 elif ex_select == 1:
-                    if item2_stock != 0:
+                    if item2_stock > 0:
                         if pg.mixer:
                             cure_sound.play()
                         hp_bar_green.width += 70
-                        item1_stock -= 1
+                        item2_stock -= 1
                         mode = "avoid"
                 pressing = True
             
@@ -653,11 +650,11 @@ def main():
             if not(pressing) and event.type == pg.KEYDOWN and event.key == pg.K_RETURN and mode == "ACT":
                 if ex_select == 0:
                     action_txt = random.choice(["???「どうしてなの？」", "???「なんであなただけ！」", "???「...」", "* きょうみがないようだ"])
-                    friendly_point += random.choice([5, 10, 15, 20, 25, 30])
+                    friendly_point += random.choice([5, 10, 15, 20])
                     mode = "TXT"
                 if ex_select == 1:
                     action_txt = random.choice(["* きくみみをもたない", "* さらににらまれた", "* すきがない", "* あっちょんぶりけ", "???「うるさい！」"])
-                    friendly_point += random.choice([5, 10, 15, 20, 25, 30])
+                    friendly_point += random.choice([5, 10, 15, 20])
                     mode = "TXT"
                 pressing = True
 
