@@ -113,8 +113,16 @@ class player_move:
                 sum_mv[0] += mv[0]
                 sum_mv[1] += mv[1]
         self.rect.move_ip(sum_mv)
-        if check_bound(self.rect) != (True, True):
-            self.rect.move_ip(-sum_mv[0], -sum_mv[1])
+        if self.rect[1]<=205:#上
+            self.rect[1]=205
+        if self.rect[1]>=376:#した
+            self.rect[1]=376
+        if self.rect[0]>=578:#右
+            self.rect[0]=578
+        if self.rect[0]<=205:#左
+            self.rect[0]=205
+
+
         
         screen.blit(self.image, self.rect)
 
@@ -494,8 +502,8 @@ def main():
 
         # 以下敵の攻撃用変数などを生成またはリセット
         if turn_flag and not processed:
-            # attack_type = random.randint(0, 3)
-            attack_type = 2
+            attack_type = random.randint(0, 3)
+            # attack_type = 2
             # 拡散弾幕用変数
             flowers = pg.sprite.Group()
             lin_cnt = 0
@@ -777,6 +785,7 @@ def main():
         act.update(screen)
         item.update(screen)
         mercy.update(screen)
+        emys.update(screen)
 
         if mode == "avoid":
             if enemy_attack_count >= 20:
@@ -861,7 +870,6 @@ def main():
             beams.draw(screen)
             dummy_beams.update(tmr)
             dummy_beams.draw(screen)
-        emys.update(screen)
 
 
         pg.display.update()
