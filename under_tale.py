@@ -158,7 +158,7 @@ def attack_action(attack_bar_lis, sur: pg.Surface):
     attack_sur = pg.Surface((600, 200))
     pg.draw.rect(attack_sur, (255, 255, 255), (0, 0, 600, 200))
     pg.draw.rect(attack_sur, (0, 0, 0), (5, 5, 590, 190))
-    img = pg.transform.rotozoom(pg.image.load(f"..\ex05/undertale_attack.png"), 0, 0.49)
+    img = pg.transform.rotozoom(pg.image.load(f"../ProjExD_05/undertale_attack.png"), 0, 0.49)
     attack_sur.blit(img, (6, 50))
     # バーが画面端に到達したら進行方向を逆にする
     if attack_bar_lis[0] < 10 or 580 < attack_bar_lis[0]:
@@ -444,6 +444,8 @@ def main():
     hp_bar_green.genobj((0, 255, 0), (50, 0, hpbar_width, 20), hpbar_sur)
     hp_bar_black = Hp()
     hp_bar_black.genobj((1, 1, 1), (170, 0, 100, 20), hpbar_sur)
+    damage_txt = Hp()
+    damage_txt.genfont("")
     #　ここまで
     
     attack_bar_lis = [10, 5] # インデックス０（表示するｘ座標）インデックス１（移動するｘ座標のピクセル量）
@@ -462,8 +464,8 @@ def main():
     # 説明文関係
     ex_1 = Explanation("")
     ex_2 = Explanation("")
-    item1_stock = 2
-    item2_stock = 1
+    item1_stock = 5
+    item2_stock = 3
     ex_select = 0 # 説明文の選択状況
     friendly_point = 0 # 逃がすのに必要なポイント
     txt_number = 1
@@ -585,13 +587,13 @@ def main():
             if not(pressing) and event.type == pg.KEYDOWN and event.key == pg.K_RETURN and mode == "ITEM":
                 if ex_select == 0:
                     if item1_stock != 0:
-                        hp_bar_green.width += 20
+                        hp_bar_green.width += 50
                         item1_stock -= 1
                         mode = "avoid"
 
                 elif ex_select == 1:
                     if item2_stock != 0:
-                        hp_bar_green.width += 30
+                        hp_bar_green.width += 70
                         item1_stock -= 1
                         mode = "avoid"
                 pressing = True
@@ -653,6 +655,7 @@ def main():
                 screen.fill((0, 0, 0))
                 enemy_hp -= attack_damage
                 friendly_point -= 20
+                attack_tmr = tmr
                 if enemy_hp < 0:
                     action_txt = "??? 「ありがとう」"
                     mode = "TXT"
@@ -768,6 +771,10 @@ def main():
         screen.blit(menu_sur, (100, 200))
 
         if mode == "avoid":
+            pg.draw.rect(bg, (0, 0, 0), (150, 100, 100, 100))
+            if tmr < attack_tmr + 100:
+                damage_txt.fonto = pg.font.Font(None, 100)
+                damage_txt.update(bg, (150, 100), f"{attack_damage}")
             screen.blit(bg, (0, 0))
 
         #ここからhpクラスオブジェクトを更新
@@ -851,7 +858,7 @@ def main():
             player.update(key_lst, screen) # プレイヤーの表示位置を更新
 
             if len(pg.sprite.spritecollide(player, flowers, True)) != 0:
-                hp_bar_green.width -= 3
+                hp_bar_green.width -= 2
             if len(pg.sprite.spritecollide(player, atk_pl, True)) != 0:
                 hp_bar_green.width -= 5
 
