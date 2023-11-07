@@ -32,7 +32,7 @@ class Enemy(pg.sprite.Sprite):
 
     def __init__(self):
         super().__init__()
-        self.img =  pg.transform.scale(pg.image.load("..\ex05\data\pngwingcom_negate.png"), (300, 200))
+        self.img =  pg.transform.scale(pg.image.load("ex05\data\pngwingcom_negate.png"), (300, 200))
 
     def update(self, screen: pg.Surface):
         screen.blit(self.img, (250, 0))
@@ -101,7 +101,7 @@ class player_move:
     def __init__(self, xy: tuple[float, float]):
         self.image = pg.transform.flip(  # 左右反転
             pg.transform.rotozoom( 
-                pg.image.load(f"..\ex05/fig/0.png"), 0, 0.02), True, False)
+                pg.image.load(f"ex05/fig/0.png"), 0, 0.02), True, False)
         self.rect = self.image.get_rect()
         self.rect.center = xy
 
@@ -158,7 +158,7 @@ def attack_action(attack_bar_lis, sur: pg.Surface):
     attack_sur = pg.Surface((600, 200))
     pg.draw.rect(attack_sur, (255, 255, 255), (0, 0, 600, 200))
     pg.draw.rect(attack_sur, (0, 0, 0), (5, 5, 590, 190))
-    img = pg.transform.rotozoom(pg.image.load(f"..\ex05/undertale_attack.png"), 0, 0.49)
+    img = pg.transform.rotozoom(pg.image.load(f"ex05/undertale_attack.png"), 0, 0.49)
     attack_sur.blit(img, (6, 50))
     # バーが画面端に到達したら進行方向を逆にする
     if attack_bar_lis[0] < 10 or 580 < attack_bar_lis[0]:
@@ -462,8 +462,8 @@ def main():
     # 説明文関係
     ex_1 = Explanation("")
     ex_2 = Explanation("")
-    item1_stock = 2
-    item2_stock = 1
+    item1_stock = 5
+    item2_stock = 3
     ex_select = 0 # 説明文の選択状況
     friendly_point = 0 # 逃がすのに必要なポイント
     txt_number = 1
@@ -851,7 +851,7 @@ def main():
             player.update(key_lst, screen) # プレイヤーの表示位置を更新
 
             if len(pg.sprite.spritecollide(player, flowers, True)) != 0:
-                hp_bar_green.width -= 3
+                hp_bar_green.width -= 2
             if len(pg.sprite.spritecollide(player, atk_pl, True)) != 0:
                 hp_bar_green.width -= 5
 
