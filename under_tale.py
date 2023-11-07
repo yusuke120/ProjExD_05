@@ -31,7 +31,7 @@ class Enemy(pg.sprite.Sprite):
 
     def __init__(self):
         super().__init__()
-        self.img =  pg.transform.scale(pg.image.load("ex05\data\pngwingcom_negate.png"), (300, 200))
+        self.img =  pg.transform.scale(pg.image.load("..\ex05\data\pngwingcom_negate.png"), (300, 200))
 
     def update(self, screen: pg.Surface):
         screen.blit(self.img, (250, 0))
