@@ -444,6 +444,8 @@ def main():
     hp_bar_green.genobj((0, 255, 0), (50, 0, hpbar_width, 20), hpbar_sur)
     hp_bar_black = Hp()
     hp_bar_black.genobj((1, 1, 1), (170, 0, 100, 20), hpbar_sur)
+    damage_txt = Hp()
+    damage_txt.genfont("")
     #　ここまで
     
     attack_bar_lis = [10, 5] # インデックス０（表示するｘ座標）インデックス１（移動するｘ座標のピクセル量）
@@ -653,6 +655,7 @@ def main():
                 screen.fill((0, 0, 0))
                 enemy_hp -= attack_damage
                 friendly_point -= 20
+                attack_tmr = tmr
                 if enemy_hp < 0:
                     action_txt = "??? 「ありがとう」"
                     mode = "TXT"
@@ -768,6 +771,10 @@ def main():
         screen.blit(menu_sur, (100, 200))
 
         if mode == "avoid":
+            pg.draw.rect(bg, (0, 0, 0), (150, 100, 100, 100))
+            if tmr < attack_tmr + 100:
+                damage_txt.fonto = pg.font.Font(None, 100)
+                damage_txt.update(bg, (150, 100), f"{attack_damage}")
             screen.blit(bg, (0, 0))
 
         #ここからhpクラスオブジェクトを更新
