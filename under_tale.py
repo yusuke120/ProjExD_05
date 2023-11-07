@@ -47,7 +47,7 @@ def main():
     emys = pg.sprite.Group()
 
     if pg.mixer:
-        music = os.path.join(main_dir, "data", "DG.mp3")
+        music = os.path.join(main_dir, "data", "voice_50210.mp3")
         pg.mixer.music.load(music)
         pg.mixer.music.play(-1)
 
