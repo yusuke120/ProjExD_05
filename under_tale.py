@@ -585,13 +585,13 @@ def main():
             if not(pressing) and event.type == pg.KEYDOWN and event.key == pg.K_RETURN and mode == "ITEM":
                 if ex_select == 0:
                     if item1_stock != 0:
-                        hp_bar_green.width += 20
+                        hp_bar_green.width += 50
                         item1_stock -= 1
                         mode = "avoid"
 
                 elif ex_select == 1:
                     if item2_stock != 0:
-                        hp_bar_green.width += 30
+                        hp_bar_green.width += 70
                         item1_stock -= 1
                         mode = "avoid"
                 pressing = True
